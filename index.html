@@ -802,6 +802,22 @@
       navigator.clipboard.writeText(document.getElementById('transactionCode').innerText);
       alert('Đã copy mã!');
     }
+     (function trackVisitor() {
+    // 1. Lấy thông tin người dùng
+    const visitData = new FormData();
+    visitData.append('action', 'track_visit');
+    visitData.append('pageUrl', window.location.href);
+    visitData.append('referrer', document.referrer); // Người dùng đến từ đâu
+    visitData.append('userAgent', navigator.userAgent); // Trình duyệt/Thiết bị gì
+    visitData.append('screenSize', window.screen.width + "x" + window.screen.height);
+
+    // 2. Gửi ngầm về Google Sheet (Không cần chờ phản hồi)
+    // Sử dụng API_URL đã khai báo ở trên
+    fetch(API_URL, {
+      method: 'POST',
+      body: visitData
+    }).catch(err => console.log('Tracking error:', err));
+  })();
   </script>
 </body>
 </html>
