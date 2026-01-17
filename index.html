@@ -272,17 +272,24 @@
           .then(res => {
             if(res.success && res.status === 'paid') {
               clearInterval(checkInterval);
+              
+              // 1. Hiển thị thông báo thành công trên giao diện
               const statusEl = document.getElementById('paymentStatus');
               statusEl.className = 'status-badge status-success';
               statusEl.innerHTML = '✅ THANH TOÁN THÀNH CÔNG!';
+              
+              // Làm mờ QR
               document.getElementById('qrImage').style.opacity = '0.3';
-              document.getElementById('submitBtn').disabled = false;
-              document.getElementById('submitBtn').innerText = 'Xác Nhận & Thanh Toán';
+              
+              // 2. Chuyển hướng sau 2 giây
               setTimeout(() => {
-                closeModal();
-                alert(`🎉 Chúc mừng ${res.name} đã đăng ký thành công!`);
-                document.getElementById('registrationForm').reset();
-              }, 3000);
+                // Thông báo nhẹ trước khi chuyển
+                statusEl.innerHTML = '🔄 Đang chuyển sang Zalo...';
+                
+                // --- CHUYỂN HƯỚNG TẠI ĐÂY ---
+                window.location.href = 'https://zalo.me/g/uyaqhe591';
+                
+              }, 2000); // Đợi 2 giây để khách kịp nhìn thấy chữ Thành Công
             }
           })
           .catch(console.error);
