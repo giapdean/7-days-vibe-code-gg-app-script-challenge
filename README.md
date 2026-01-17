@@ -1,0 +1,1 @@
+# 7-days-vibe-code-gg-app-script-challenge
