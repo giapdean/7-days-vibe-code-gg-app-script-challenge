@@ -1396,7 +1396,7 @@
       btn.disabled = true;
       btn.innerHTML = '<span class="loading-spinner"></span> Đang xác minh...';
       resultEl.className = 'discount-result';
-      resultEl.style.display = 'none';
+      resultEl.removeAttribute('style');
 
       const form = new FormData();
       form.append('action', 'play_game');
@@ -1408,6 +1408,7 @@
           btn.disabled = false;
           btn.textContent = 'Nhận Mã';
           if (data.success) {
+            resultEl.removeAttribute('style');
             resultEl.className = 'discount-result success';
             resultEl.innerHTML = '✅ Mã giảm giá của bạn: <strong style="font-size: 1.1rem; letter-spacing: 1px;">' + data.code + '</strong><br><span style="font-size: 0.85rem; opacity: 0.8;">Hãy copy mã này và dán vào form đăng ký bên dưới!</span>';
 
@@ -1416,6 +1417,7 @@
             document.getElementById('package').value = 'vip';
             checkDiscount(); // Auto-validate
           } else {
+            resultEl.removeAttribute('style');
             resultEl.className = 'discount-result error';
             resultEl.textContent = '❌ ' + data.message;
           }
@@ -1423,6 +1425,7 @@
         .catch(err => {
           btn.disabled = false;
           btn.textContent = 'Nhận Mã';
+          resultEl.removeAttribute('style');
           resultEl.className = 'discount-result error';
           resultEl.textContent = '❌ Lỗi kết nối: ' + err;
         });
@@ -1435,7 +1438,7 @@
 
       if (!code) {
         badge.className = 'discount-badge';
-        badge.style.display = 'none';
+        badge.removeAttribute('style');
         return;
       }
 
