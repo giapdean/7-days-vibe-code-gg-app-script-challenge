@@ -1388,6 +1388,7 @@
       const btn = document.getElementById('verifyShareBtn');
 
       if (!url || !url.includes('facebook.com')) {
+        resultEl.removeAttribute('style');
         resultEl.className = 'discount-result error';
         resultEl.textContent = '❌ Vui lòng dán link bài viết Facebook hợp lệ.';
         return;
@@ -1410,12 +1411,13 @@
           if (data.success) {
             resultEl.removeAttribute('style');
             resultEl.className = 'discount-result success';
-            resultEl.innerHTML = '✅ Mã giảm giá của bạn: <strong style="font-size: 1.1rem; letter-spacing: 1px;">' + data.code + '</strong><br><span style="font-size: 0.85rem; opacity: 0.8;">Hãy copy mã này và dán vào form đăng ký bên dưới!</span>';
-
-            // Tự động điền mã vào form
+            resultEl.innerHTML = '✅ Mã giảm giá của bạn: <strong style="font-size: 1.1rem; letter-spacing: 1px;">' + data.code + '</strong><br><span style="font-size: 0.85rem; opacity: 0.8;">Mã đã được tự động điền vào form bên dưới!</span>';
             document.getElementById('discountCode').value = data.code;
             document.getElementById('package').value = 'vip';
-            checkDiscount(); // Auto-validate
+            checkDiscount();
+            setTimeout(() => {
+              document.getElementById('register-section').scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
           } else {
             resultEl.removeAttribute('style');
             resultEl.className = 'discount-result error';
@@ -1445,6 +1447,13 @@
       if (pkg !== 'vip') {
         badge.className = 'discount-badge invalid';
         badge.textContent = '⚠️ Mã giảm giá chỉ áp dụng cho Gói VIP';
+        return;
+      }
+
+      // Check local (VIBE30) hoặc gọi API
+      if (code.toUpperCase() === 'VIBE30') {
+        badge.className = 'discount-badge valid';
+        badge.innerHTML = '✅ Mã hợp lệ! Giảm 30% → Chỉ còn <strong>2.100.000đ</strong>';
         return;
       }
 
@@ -1495,4 +1504,3 @@
 </body>
 
 </html>
-
